@@ -61,11 +61,11 @@
 (*Begin["`Private`"]*)
 (**)
 (*(*ICs - Initial Conditions *)*)
-(*ffCartPendulum[ICs_,n_,\[Tau]_,\[Tau]1_,A_]:=Module[{x,xdot,f,\[Theta],\[Theta]dot,\[Lambda]1,\[Lambda]2,\[Lambda]3,\[Lambda]4,\[CapitalDelta]t,bcs,eqns,sv,froot,xff,xdotff,xff0,xdotff0,\[Theta]ff0,\[Theta]dotff0,uff0,\[Theta]ff,\[Theta]dotff,uff},\[CapitalDelta]t=\[Tau]/n;*)
+(*ffCartPendulum[ICs_,n_,\[Tau]_,\[Tau]1_,A_,order_]:=Module[{x,xdot,f,\[Theta],\[Theta]dot,\[Lambda]1,\[Lambda]2,\[Lambda]3,\[Lambda]4,\[CapitalDelta]t,bcs,eqns,sv,froot,xff,xdotff,xff0,xdotff0,\[Theta]ff0,\[Theta]dotff0,uff0,\[Theta]ff,\[Theta]dotff,uff},\[CapitalDelta]t=\[Tau]/n;*)
 (*f[{x_,xdot_,\[Theta]_,\[Theta]dot_,\[Lambda]1_,\[Lambda]2_,\[Lambda]3_,\[Lambda]4_}]:={xdot,1/(1-A Cos[\[Theta]]^2) (A \[Theta]dot^2 Sin[\[Theta]]+1/(1-A Cos[\[Theta]]^2) (\[Lambda]4 Cos[\[Theta]]-\[Lambda]2)+A Cos[\[Theta]] Sin[\[Theta]]),\[Theta]dot,1/(1-A Cos[\[Theta]]^2) (-(1/(1-A Cos[\[Theta]]^2))(-\[Lambda]2 Cos[\[Theta]]+\[Lambda]4 Cos[\[Theta]]^2)-Sin[\[Theta]]-A \[Theta]dot^2 Cos[\[Theta]] Sin[\[Theta]]),0,-\[Lambda]1,2/(A Cos[2 \[Theta]]+A-2)^3 (Cos[\[Theta]] (4 Sin[\[Theta]] (A \[Lambda]4^2 Cos[2 \[Theta]]+4 A \[Lambda]2^2+(A+2) \[Lambda]4^2)-(A Cos[2 \[Theta]]-3 A+2) (A Cos[2 \[Theta]]+A-2) (A \[Theta]dot^2 \[Lambda]2-\[Lambda]4))+A ((A-2) Cos[2 \[Theta]]+A) (A Cos[2 \[Theta]]+A-2) (\[Lambda]2-\[Theta]dot^2 \[Lambda]4)-4 \[Lambda]2 \[Lambda]4 Sin[\[Theta]] (3 A Cos[2 \[Theta]]+3 A+2)),4 /(A Cos[2 \[Theta]]+A-2) (A \[Theta]dot Sin[\[Theta]] (\[Lambda]2-\[Lambda]4 Cos[\[Theta]]))-\[Lambda]3};*)
 (*bcs={Subscript[x, 0]==ICs[[1]],Subscript[xdot, 0]==ICs[[2]],Subscript[x, n]==Subscript[xdot, n]==0,Subscript[\[Theta], 0]==ICs[[3]],Subscript[\[Theta]dot, 0]==ICs[[4]],Subscript[\[Theta]dot, n]==0,Subscript[\[Theta], n]==\[Pi]};eqns=Flatten[Join[bcs,Table[Thread[{Subscript[x, i],Subscript[xdot, i],Subscript[\[Theta], i],Subscript[\[Theta]dot, i],Subscript[\[Lambda]1, i],Subscript[\[Lambda]2, i],Subscript[\[Lambda]3, i],Subscript[\[Lambda]4, i]}==1/2 \[CapitalDelta]t (f[{Subscript[x, i-1],Subscript[xdot, i-1],Subscript[\[Theta], i-1],Subscript[\[Theta]dot, i-1],Subscript[\[Lambda]1, i-1],Subscript[\[Lambda]2, i-1],Subscript[\[Lambda]3, i-1],Subscript[\[Lambda]4, i-1]}]+f[{Subscript[x, i],Subscript[xdot, i],Subscript[\[Theta], i],Subscript[\[Theta]dot, i],Subscript[\[Lambda]1, i],Subscript[\[Lambda]2, i],Subscript[\[Lambda]3, i],Subscript[\[Lambda]4, i]}])+{Subscript[x, i-1],Subscript[xdot, i-1],Subscript[\[Theta], i-1],Subscript[\[Theta]dot, i-1],Subscript[\[Lambda]1, i-1],Subscript[\[Lambda]2, i-1],Subscript[\[Lambda]3, i-1],Subscript[\[Lambda]4, i-1]}],{i,1,n}]]];sv=Flatten[Table[{{Subscript[x, i],ICs[[1]]},{Subscript[xdot, i],ICs[[2]]},{Subscript[\[Theta], i],ICs[[3]]},{Subscript[\[Theta]dot, i],ICs[[4]]},{Subscript[\[Lambda]1, i],0},{Subscript[\[Lambda]2, i],0},{Subscript[\[Lambda]3, i],0},{Subscript[\[Lambda]4, i],0}},{i,0,n}],1];froot=FindRoot[eqns,sv];*)
-(*xff0=ListInterpolation[Table[Subscript[x, i],{i,0,n}]/. froot,{0,\[Tau]},InterpolationOrder->1];*)
-(*xdotff0=ListInterpolation[Table[Subscript[xdot, i],{i,0,n}]/. froot,{0,\[Tau]},InterpolationOrder->1];\[Theta]ff0=ListInterpolation[Table[Subscript[\[Theta], i],{i,0,n}]/. froot,{0,\[Tau]},InterpolationOrder->1];\[Theta]dotff0=ListInterpolation[Table[Subscript[\[Theta]dot, i],{i,0,n}]/. froot,{0,\[Tau]},InterpolationOrder->1];uff0=ListInterpolation[Table[1/(1-A Cos[Subscript[\[Theta], i]]^2) (Subscript[\[Lambda]4, i]Cos[Subscript[\[Theta], i]]-Subscript[\[Lambda]2, i]),{i,0,n}]/. froot,{0,\[Tau]},InterpolationOrder->1];*)
+(*xff0=ListInterpolation[Table[Subscript[x, i],{i,0,n}]/. froot,{0,\[Tau]},InterpolationOrder->order];*)
+(*xdotff0=ListInterpolation[Table[Subscript[xdot, i],{i,0,n}]/. froot,{0,\[Tau]},InterpolationOrder->order];\[Theta]ff0=ListInterpolation[Table[Subscript[\[Theta], i],{i,0,n}]/. froot,{0,\[Tau]},InterpolationOrder->order];\[Theta]dotff0=ListInterpolation[Table[Subscript[\[Theta]dot, i],{i,0,n}]/. froot,{0,\[Tau]},InterpolationOrder->order];uff0=ListInterpolation[Table[1/(1-A Cos[Subscript[\[Theta], i]]^2) (Subscript[\[Lambda]4, i]Cos[Subscript[\[Theta], i]]-Subscript[\[Lambda]2, i]),{i,0,n}]/. froot,{0,\[Tau]},InterpolationOrder->order];*)
 (**)
 (*xff[t_]:=Piecewise[{{xff0[t],0<=t<=\[Tau]}},0];*)
 (*xdotff[t_]:=Piecewise[{{xdotff0[t],0<=t<=\[Tau]}},0];*)
@@ -177,8 +177,6 @@
 (*{J,p1a,p1b,p1c}]*)
 (**)
 (**)
-(*End[] (*End Private Context*)*)
-(**)
 (*EndPackage[]*)
 
 
@@ -244,6 +242,7 @@
 (*  // Print]*)
 (*p1b = Plot[{\[Theta]s[t], us[t], xs[t], \[Theta]dots[t], xdots[t]}, {t, 0, \[Tau]1}, PlotRange -> {-4, 4}, Filling -> {2 -> Axis}, PlotLegends -> {"\[Theta]1b", "u1b", "x1b", "\[Theta]dot1b", "xdot1b"}, PlotLabel -> "Test on dynamics", AspectRatio -> 1/3, ImageSize -> 400, GridLines -> {None, {-\[Pi], \[Pi]}}]*)
 (*Js*)
+(**)
 
 
 (* ::CodeText:: *)
